@@ -10,7 +10,7 @@
 ---
 
 ## 📖 Scenario  
-You'll be working with a provided **[Figma Design](https://www.figma.com/design/5Bw2nC4RgTSSDBxDgW5GiA/FE-Test?node-id=0-1&p=f)** to complete this challenge. The focus is **data integration**, **design fidelity** and **component creation**, we want to see how closely you can translate design intent into front-end code, while building in a way that anticipates future changes.  
+You'll be working with a provided **[Figma Design](https://www.figma.com/design/STwysTPYIZfV3pzNm1TvMq/FE-Test-%7C-2?node-id=1-3&p=f&m=dev)** to complete this challenge. The focus is **data integration**, **design fidelity** and **component creation**, we want to see how closely you can translate design intent into front-end code, while building in a way that anticipates future changes.  
 
 Within the Figma file, you'll find a section titled **“Components”**, which includes:  
 - **Card**  
