@@ -36,13 +36,10 @@ You'll also see **one animation sequence** in the section titled *“Order form 
 ## 🎯 Focus Areas  
 
 - **Design Precision**  
-  Your implementation should match the provided Figma designs as closely as possible (spacing, typography, component behavior and animation accuracy etc.).  
+  Your implementation should match the provided Figma designs as closely as possible (spacing, typography, component behavior and animation accuracy etc.). Don't be afraid to lean in to the framwork to assist with component creation.
 
 - **Component Thinking**  
   Build components in a way that allows them to be reused and updated. Future design changes should be easy to accommodate.
-
-- **UX / UI Assumptions**  
-  Where the design doesn't explicitly define behavior (e.g. hover states, edge cases, other), make thoughtful assumptions and clearly document them.  
 
 - **API / Data Modeling**  
   Propose a realistic and well-structured holdings data source that reflects how a front-end developer would typically consume APIs. Other data sets required have been provided.
@@ -73,6 +70,7 @@ Please stop at the cap and note trade-offs or unfinished items in the README. Fo
 
 ## ⚠️ Notes
 
+- Where the design doesn't explicitly define behavior (e.g. hover states, edge cases, other), make thoughtful assumptions and clearly document them.  
 - Access to the Figma file is password-protected. The password will be provided by a member of the Stake team along with when this task is handed over.
 - Please ensure you can log in to a free Figma account to use the Inspect tools effectively to complete the challenge.
 
