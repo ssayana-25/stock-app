@@ -64,7 +64,7 @@ You'll also see **one animation sequence** in the section titled *“Order form 
 
 This task is designed to take around **4 hours (hard cap 4)**, but we understand everyone works differently. Please don't over-engineer; focus on **quality and detail**, not quantity.  
 
-Please stop at the cap and note trade-offs or unfinished items in the README. Focus on design fidelity, clean componentisation, the alert animation, and a realistic API/data model. Extras are optional.
+Please stop at the cap and note trade-offs or unfinished items in the README. Focus on design fidelity, clean componentisation, the animation, and a realistic API/data model. Extras are optional.
 
 ---
 
