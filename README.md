@@ -45,7 +45,7 @@ You'll also see **one animation sequence** in the section titled *“Order form 
   Propose a realistic and well-structured holdings data source that reflects how a front-end developer would typically consume APIs. Other data sets required have been provided.
 
 - **Data Integration & Composition**  
-  Combine multiple data outputs into a single, UI-ready view model.
+  Use the provided data sources directly, or combine them when needed, to supply your components with the most relevant view models. Structure your solution with RxJS in mind, ensuring state management is both considered and functional.
 
 ---
 
