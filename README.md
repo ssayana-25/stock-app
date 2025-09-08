@@ -72,7 +72,7 @@ Please stop at the cap and note trade-offs or unfinished items in the README. Fo
 
 - Where the design doesn't explicitly define behavior (e.g. hover states, edge cases, other), make thoughtful assumptions and clearly document them.  
 - Access to the Figma file is password-protected. The password will be provided by a member of the Stake team along with when this task is handed over.
-- Please ensure you can log in to a free Figma account to use the Inspect tools effectively to complete the challenge.
+- Please ensure you can log in to a free Figma account to use the Inspect tools effectively to complete the challenge - note, you will not have access to "development mode". Use the "Layers" on the left hand side to access individual sections in order to see their styles.
 
 
 ---
