@@ -68,6 +68,13 @@ Please stop at the cap and note trade-offs or unfinished items in the README. Fo
 
 ---
 
+## 📖 Ionic use
+
+- Use Ionic's tab layout - you can easily get a tab starter template set up via Ionic's commands.
+- Don't be afraid to lean in to the Ionic Framework to provide the basis of your [components](https://ionicframework.com/docs/components) to get them set up quickly.
+
+---
+
 ## ⚠️ Notes
 
 - Where the design doesn't explicitly define behavior (e.g. hover states, edge cases, other), make thoughtful assumptions and clearly document them.  
