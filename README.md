@@ -24,9 +24,10 @@ You'll also see **one animation sequence** in the section titled *“Order form 
 
 ## 📝 Tasks  
 
-1. **Implement the Invest and Discover page** as shown in the Figma mockup.  
-2. **Implement the BUY animation sequence** based on the frame steps provided.  
-3. **Design an ideal API / data source for your equity positions**:  
+1. Use Angular 14+ and Ionic 7+
+2. **Implement the Invest and Discover page** as shown in the Figma mockup.  
+3. **Implement the BUY animation sequence** based on the frame steps provided.  
+4. **Design an ideal API / data source for your equity positions**:  
    - Define the structure of the data you would expect from one or more APIs.  
    - Be realistic: don't assume all necessary data will come from a single endpoint.  
    - Show how this data structure would power your components effectively.  
@@ -45,13 +46,13 @@ You'll also see **one animation sequence** in the section titled *“Order form 
   Propose a realistic and well-structured holdings data source that reflects how a front-end developer would typically consume APIs. Other data sets required have been provided.
 
 - **Data Integration & Composition**  
-  Use the provided data sources directly, or combine them when needed, to supply your components with the most relevant view models. Structure your solution with RxJS in mind, ensuring state management is both considered and functional.
+  Use the provided data sources directly, or combine them when needed, to supply your components with the most relevant view models. Structure your solution with RxJS in mind, ensuring state management is both considered and functional. If you are using Angular 16 and up we still want to see some use of RxJS observables.
 
 ---
 
 ## 📦 Deliverables  
 
-- A working Angular (optional + Ionic) project.  
+- A working project.  
 - A **README** describing:  
   - Any design assumptions you made.  
   - How your components were structured to handle future design updates.  
