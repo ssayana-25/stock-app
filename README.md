@@ -3,7 +3,7 @@
 
 **Frameworks:** Angular, Ionic  
 **Estimated Time:** 4~ hours  
-**Submission Platform:** [StackBlitz](https://stackblitz.com/) or GitHub
+**Submission Platform:** [StackBlitz](https://stackblitz.com/) for hosting the project is required. Github link can be shared as well along with stackblitz.
 
 <img width="1912" height="1080" alt="Stake" src="https://github.com/user-attachments/assets/5ae47a2d-22f3-420e-ba20-985b76d7b937" />
 
