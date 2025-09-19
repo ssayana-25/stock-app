@@ -15,11 +15,16 @@ Tabs:
 - Each tab routes to Invest/Discover pages
 - Default routes to Invest
 
+
 DiscoverPage:
 - Fetches stock data- Stock search.
 - Handles input filtering, clearing, and selection of recently viewed stocks.
 (Clicking on a stock returned back in the search result adds its to the recenly view list- Assuming clicking on a stock would open the stock details page or a modal to view details- Not implemented considering the time constarints)
 - Displays Top 3 Volume stock cards ( assuming vomune as the determining factor)
+
+
+<img width="486" height="713" alt="Screenshot 2025-09-19 at 11 34 17 PM" src="https://github.com/user-attachments/assets/d3c5210f-4459-4413-9bad-7c0223f27a9c" />
+<img width="481" height="718" alt="Screenshot 2025-09-19 at 11 34 27 PM" src="https://github.com/user-attachments/assets/244f4e6a-f10a-4408-b9c2-3916b88dc8ac" />
 
 InvestPage:
 - Displays equity from the holding
@@ -27,11 +32,16 @@ InvestPage:
 - Display Top 10 trending stocks- assuming marketcap is the deciding attribute
 - Clicking on cards enabled purchasing the stock
 
+<img width="483" height="721" alt="Screenshot 2025-09-19 at 11 34 07 PM" src="https://github.com/user-attachments/assets/41e12b80-cac3-447c-9305-eab13760e68b" />
+
 BuyModel:
 - Hold the logic for the Buy model.
 - User has to enter the shares they want to purchase which automatically updates the price 
 - swipe button disabled untill shares entered. 
 - On swipe, stock added to the holding list and dispalys a success notification
+
+  <img width="553" height="951" alt="Screenshot 2025-09-19 at 11 31 22 PM" src="https://github.com/user-attachments/assets/c1fe7f96-8d47-4efe-a95f-ea35b7f8a673" />
+
 
 Shared Component:
 StockCardPage:
