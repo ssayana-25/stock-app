@@ -1,0 +1,55 @@
+<ion-content class="ion-padding">
+
+  <!-- Search bar -->
+  <ion-searchbar
+    debounce="300"
+    placeholder="Search"
+    showClearButton="never"
+    (ionInput)="filterList($event)"
+    (ionClear)="onClearInput()"
+  >
+    <div
+      *ngIf="filteredStocks.length > 0"
+      slot="end"
+      class="custom-clear"
+      (click)="onClearInput()"
+    >
+      Cancel
+    </div>
+  </ion-searchbar>
+
+  <!-- Filtered search results -->
+  <ion-list>
+    <ng-container *ngFor="let stock of filteredStocks">
+      <ion-item (click)="selectRVStock(stock)">
+        <ion-label>
+          <h2>{{ stock.symbol }}</h2>
+          <p>{{ stock.fullName }}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+
+  <section *ngIf="filteredStocks.length == 0">
+  <!-- Recently viewed -->
+    <div class="recentlyViewed" *ngIf="rvStockList.length > 0">
+      <h2>Recently searched</h2>
+      <ng-container *ngFor="let stock of rvStockList">
+        <app-instrument [stock]="stock" [isUserStock]="false"></app-instrument>
+      </ng-container>
+    </div>
+
+    <!-- Top 3 volume stocks -->
+    <div class="topVoulume" *ngIf="topVolumeStocks.length > 0">
+      <h2>Top 3 volume stock</h2>
+      <div class="stocks-carousel">
+        <ng-container *ngFor="let stock of topVolumeStocks">
+          <app-stock-card [stock]="stock" [topByVolume]="true"></app-stock-card>
+        </ng-container>
+      </div>
+    </div>
+
+  </section>
+
+</ion-content>

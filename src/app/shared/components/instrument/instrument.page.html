@@ -1,0 +1,26 @@
+<ion-item>
+  <ion-label>
+    <h3>{{ stock.symbol }}</h3>
+
+    <p *ngIf="isUserStock">
+      {{ stockShares() }} shares
+    </p>
+    <p *ngIf="!isUserStock">
+      {{ getFullName() }}
+    </p>
+  </ion-label>
+
+  <div class="price-section">
+    <span class="price">${{ stock.ask }}</span>
+    <span
+      class="change"
+      *ngIf="isUserStock"
+      [ngClass]="{
+        'positive': stock.change > 0,
+        'negative': stock.change < 0
+      }"
+    >
+      {{ stock.change | number:'1.0-2' }}%
+    </span>
+  </div>
+</ion-item>

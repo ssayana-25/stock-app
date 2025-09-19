@@ -1,0 +1,85 @@
+.header-md {
+    box-shadow: none;
+  
+    ion-title {
+      font-size: 32px;
+    }
+  }
+  .stocks-carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+  }
+  .equity-card {
+    .equity-label {
+      font-size: 14px;
+    }
+    .equity-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  }
+
+  .holdings {
+    margin-top: 40px;
+    @media (min-width: 768px) {
+        width: 500px;
+    }
+    .holding-heading {
+      font-size: 12px;
+      color: grey;
+  
+      .price-section {
+        display: flex;
+  
+        .price {
+          padding: 0 15px;
+        }
+  
+        .change {
+          width: 65px;
+          align-self: center;
+          text-align: end;
+        }
+      }
+    }
+  
+    ion-item {
+      --inner-border-width: 0;
+      --inner-padding-end: 0;
+      --padding-start: 0;
+    }
+  }
+  
+  .holdings h2,
+  .trending h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 16px 0 8px;
+  }
+  ion-modal::part(content) {
+    --border-radius: 30px;
+    --min-height: 200px;
+    --max-height: 500px;
+    max-width: 450px;
+    min-width: max-content;
+    @media (max-width: 767px) {
+        position: absolute;
+        top: auto;
+        bottom: 10px;
+    }
+  }
+  
+  ion-toast {
+    --background: #daf1ef;
+    --color: #000;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --border-radius: 12px;
+    --box-shadow: none;
+    font-size: 1rem;
+  }
+  

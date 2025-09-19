@@ -1,0 +1,90 @@
+.stock-card {
+    width: 150px;
+    cursor: pointer;
+  
+    &.topVolumeCard {
+      width: 350px;
+  
+      .price {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 15px;
+        color: #000;
+      }
+  
+      .name-symbol {
+        display: flex;
+        align-items: center;
+  
+        ion-card-title,
+        .card-subtitle {
+          font-size: 14px;
+          font-weight: 500;
+          margin-top: 5px;
+        }
+      }
+  
+      .card-header .stock-img {
+        height: 25px;
+        width: 25px;
+      }
+  
+      .extra-info {
+        border-top: 1px solid #e2dfdf;
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        font-size: 12px;
+        padding-top: 5px;
+        color: #666;
+  
+        .info-item {
+          display: flex;
+          align-items: center;
+          padding-right: 5px;
+  
+          img {
+            height: 20px;
+            width: 20px;
+            margin-right: 3px;
+          }
+        }
+      }
+    }
+  
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+  
+      .stock-img {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  
+    .card-subtitle {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 400;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+  
+    ion-card-title,
+    .card-subtitle {
+      color: grey;
+    }
+  
+    ion-card-title {
+      font-size: 16px;
+    }
+  
+    ion-card-content {
+      color: black;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+  

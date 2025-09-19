@@ -1,0 +1,83 @@
+ion-item {
+    --highlight-color-focused: var(--ion-color-primary);
+    margin: 12px;
+    border: 1px solid rgb(222, 219, 219);
+    border-radius: 4px;
+    --color: grey;
+  
+    ion-label {
+      font-weight: 500;
+    }
+  
+    ion-input {
+      font-size: 14px;
+      line-height: 16px;
+      --color: #000;
+    }
+  }
+  
+  ion-item::part(native) {
+    --inner-border-width: 0 0 0 0;
+  }
+  
+  .swipe-container {
+    margin: 40px 12px;
+  }
+  
+  .swipe-track {
+    position: relative;
+    width: 100%;
+    height: 64px;
+    background: black;
+    color: #fff;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+  
+    &.invalid {
+      cursor: not-allowed;
+      background: #f4f4f4;
+      color: #666;
+    }
+  }
+  
+  .swipe-thumb {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--ion-color-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    touch-action: pan-x;
+    margin-left: 5px;
+  }
+  
+  .swipe-thumb img {
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+  
+  .swipe-label {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    pointer-events: none;
+  }
+  
+  .header-md {
+    box-shadow: none;
+  
+    ion-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }

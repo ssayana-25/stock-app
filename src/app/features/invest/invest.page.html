@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-toast
+    [isOpen]="isToastOpen"
+    position="top"
+    [message]="selectedStock?.fullName + ' successfully purchased'"
+    [duration]="3000">
+  </ion-toast>
+
+  <div class="equity-card" *ngIf="userStocks.length > 0">
+    <p class="equity-label">Total equity</p>
+    <h1 *ngIf="totalEquity" class="equity-value">
+      {{ totalEquity | currency:'USD':'symbol':'1.2-2' }}
+    </h1>
+  </div>
+
+  <!-- Holdings section -->
+  <div class="holdings" *ngIf="userStocks.length > 0">
+    <h2>Holdings</h2>
+    <ion-list>
+      <ion-item class="holding-heading">
+        <ion-label>
+          <div>Stock</div>
+        </ion-label>
+        <div class="price-section">
+          <div class="price">Price</div>
+          <div class="change">Change</div>
+        </div>
+      </ion-item>
+
+      <!-- User stocks -->
+      <ng-container *ngFor="let stock of userStocks; trackBy: trackById">
+        <app-instrument [stock]="stock" [isUserStock]="true"></app-instrument>
+      </ng-container>
+    </ion-list>
+  </div>
+
+  <!-- Trending stocks -->
+  <div class="trending">
+    <h2>Trending stocks</h2>
+    <section class="stocks-carousel">
+      <ng-container *ngFor="let stock of trendingStocks; trackBy: trackById">
+        <app-stock-card
+          [stock]="stock"
+          (selected)="openBuyModal($event)">
+        </app-stock-card>
+      </ng-container>
+    </section>
+  </div>
+
+  <!-- Buy modal -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeBuyModal()">
+    <ng-template>
+      <app-buy-model
+        class="buy-modal"
+        [stock]="selectedStock"
+        (dismiss)="closeBuyModal($event)">
+      </app-buy-model>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

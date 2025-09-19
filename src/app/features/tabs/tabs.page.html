@@ -1,0 +1,13 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="invest" href="/home/invest">
+      <app-svg-icon [paths]="PORTFOLIO_ICON" [variant]="activeTab ? 'active' : 'inactive'" [size]="30"></app-svg-icon>
+      <ion-label>Invest</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="discover" href="/home/discover">
+      <app-svg-icon [paths]="SEARCH_ICON" [variant]="activeTab ? 'active' : 'inactive'" [size]="30"></app-svg-icon>
+      <ion-label>Discover</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

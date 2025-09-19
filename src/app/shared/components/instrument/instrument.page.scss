@@ -1,0 +1,34 @@
+.price-section {
+    text-align: right;
+  
+    .price {
+      padding: 15px;
+    }
+  
+    .change {
+      font-size: 14px;
+      padding: 3px 12px;
+      color: white;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+  
+    .change.positive {
+      background-color: #16c784;
+    }
+  
+    .change.negative {
+      background-color: #ff4d4f;
+    }
+  }
+  
+  ion-item {
+    --inner-border-width: 0;
+    --inner-padding-end: 0;
+    --padding-start: 0;
+  
+    .item-native {
+      padding-left: 0;
+    }
+  }
+  

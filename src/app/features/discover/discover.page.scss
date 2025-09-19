@@ -1,0 +1,43 @@
+ion-item {
+    cursor: pointer;
+}
+  
+.stocks-carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+}
+  
+.recentlyViewed h2,
+.topVoulume h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 16px 0 8px;
+}
+  
+ion-searchbar {
+    --border-radius: 20px;
+    --box-shadow: none;
+    --background: #eeebeb;
+    display: flex;
+    flex-direction: row-reverse;
+  
+    input {
+      background: #666;
+    }
+  
+    .custom-clear {
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+      padding: 0 12px;
+    }
+  
+    &.searchbar-has-focus {
+        --background: #fff;
+        --box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+}
+  
