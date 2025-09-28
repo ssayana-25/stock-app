@@ -1,93 +1,67 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { 
-  IonHeader, IonToolbar, IonTitle, IonModal, IonContent, 
+  IonHeader, IonToolbar, IonTitle, IonContent, 
   IonButton, IonToast, IonList, IonItem, IonLabel 
 } from '@ionic/angular/standalone';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, of, switchMap, timer } from 'rxjs';
 
 import { StockDetails, UserStockDetails } from 'src/app/core/models/stock.model';
 import { StockService } from 'src/app/core/services/stock.service';
 import { StockCardPage } from 'src/app/shared/components/stock-card/stock-card.page';
 import { BuyModelPage } from '../buy-model/buy-model.page';
-import { getTopStocksBy } from 'src/app/shared/utils/stock-helper';
 import { StockStorageService } from 'src/app/core/services/storage.service';
 import { InstrumentPage } from 'src/app/shared/components/instrument/instrument.page';
-
+import { ToastMsgComponent } from 'src/app/shared/components/toast-msg/toast-msg.component';
+import { NotificationService } from 'src/app/core/services/notification-service';
+import { trackById } from 'src/app/shared/utils/stock-helper';
 @Component({
   selector: 'app-invest',
   templateUrl: 'invest.page.html',
   styleUrls: ['invest.page.scss'],
   imports: [
-    IonHeader, IonToolbar, IonTitle, IonModal, CommonModule, 
+    IonHeader, IonToolbar, IonTitle, CommonModule, 
     StockCardPage, BuyModelPage, IonContent, IonToast, 
-    IonList, InstrumentPage, IonItem, IonLabel
+    IonList, InstrumentPage, IonItem, IonLabel, ToastMsgComponent, IonButton
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InvestPage implements OnInit {
-  stock$!: Observable<StockDetails[]>;
-  isModalOpen = false;
-  isToastOpen = false;
+export class InvestPage implements OnInit, OnDestroy {
+  stock$: Observable<StockDetails[]> = of([]);
   selectedStock?: StockDetails;
   stocks: StockDetails[] = [];
-  trendingStocks: StockDetails[] = [];
-  userStocks: UserStockDetails[] = [];
-  totalEquity?: number;
-  unsubscribe$ = new Subject<void>();
+  trendingStocks$: Observable<StockDetails[]> = of([]);
+  userStocks$: Observable<UserStockDetails[]> = of([]);
+  totalEquity$: Observable<number> = of(0);
+  notificationsEnabled$: Observable<boolean>= of(false);
+  trackById!: (index: number, stock: StockDetails | UserStockDetails) => string;
 
   constructor(
     private stockService: StockService,
     private userStockList: StockStorageService,
-    private cd: ChangeDetectorRef
+    private notificationService : NotificationService
   ) {}
 
   ngOnInit(): void {
-    // Fetch stock details
-    this.stockService.getStockDetails().subscribe(data => {
-      this.stocks = data;
-
-      // Get top 10 trending stocks (by market cap)
-      this.trendingStocks = getTopStocksBy(data, 10, 'marketCap');
-      this.getUserStockList();
-    });
+    // fetch trending stocks
+    this.trendingStocks$ =   timer(0, 5000).pipe(  
+      switchMap(() => this.stockService.trendingStocks())
+    )
+    // fetch stocks bought and the equity on them
+    this.userStocks$ = this.userStockList.userStockList$;
+    this.totalEquity$ = this.userStockList.totalEquity$
+    this.notificationsEnabled$ = this.notificationService.notificationsEnabled$
+    this.trackById = trackById
   }
-
-  // Load user stock list from storage
-  async getUserStockList() {
-    this.userStocks = await this.userStockList.getUserStockList();
-    console.log(this.userStocks);
-
-    this.totalEquity = this.userStocks.reduce(
-      (acc, stock) => acc + stock.stockEquity, 
-      0
-    );
+  
+  enableAlerts(){
+    this.notificationService.startAlerts();
   }
-
-  // Buy stocks and update storage
-  async buyStocks(stock: UserStockDetails) {
-    await this.userStockList.buyStock(stock);
-    this.getUserStockList();
-  }
-
   openBuyModal(stock: StockDetails) {
-    this.selectedStock = stock;
-    this.isModalOpen = true;
-  }
-  trackById(index: number, stock: StockDetails | UserStockDetails) {
-    return stock.symbol;
+    this.stockService.openBuyModal(stock);
   }
 
-  closeBuyModal(stock?: UserStockDetails) {
-    this.isModalOpen = false;
-    this.cd.markForCheck();
-
-    if (stock) {
-      this.isToastOpen = true;
-      this.buyStocks(stock);
-    }
-  }
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.notificationService.stopAlerts();
   }
 }

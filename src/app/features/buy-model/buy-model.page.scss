@@ -1,6 +1,6 @@
 ion-item {
     --highlight-color-focused: var(--ion-color-primary);
-    margin: 12px;
+    margin: 0 12px;
     border: 1px solid rgb(222, 219, 219);
     border-radius: 4px;
     --color: grey;
@@ -79,5 +79,22 @@ ion-item {
     ion-title {
       font-size: 20px;
       font-weight: 600;
+      margin-top: 40px;
+    }
+    ion-buttons {
+      margin-top: 40px;
+    }
+  }
+
+  ion-modal::part(content) {
+    --border-radius: 30px;
+    --min-height: 200px;
+    --max-height: 450px;
+    max-width: 450px;
+    min-width: max-content;
+    @media (max-width: 767px) {
+        position: absolute;
+        top: auto;
+        bottom: 10px;
     }
   }

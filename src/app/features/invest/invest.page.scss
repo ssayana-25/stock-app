@@ -61,7 +61,7 @@
   ion-modal::part(content) {
     --border-radius: 30px;
     --min-height: 200px;
-    --max-height: 500px;
+    --max-height: 450px;
     max-width: 450px;
     min-width: max-content;
     @media (max-width: 767px) {

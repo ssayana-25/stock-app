@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import {
   IonContent,
   IonSearchbar,
@@ -7,13 +7,15 @@ import {
   IonLabel,
   IonItem
 } from '@ionic/angular/standalone';
-import { map, Subject, takeUntil } from 'rxjs';
-import { StockDetails } from 'src/app/core/models/stock.model';
+import { Observable, of} from 'rxjs';
+import { StockDetails, UserStockDetails } from 'src/app/core/models/stock.model';
 import { StockService } from 'src/app/core/services/stock.service';
 import { StockStorageService } from 'src/app/core/services/storage.service';
 import { InstrumentPage } from 'src/app/shared/components/instrument/instrument.page';
 import { StockCardPage } from 'src/app/shared/components/stock-card/stock-card.page';
-import { getTopStocksBy } from 'src/app/shared/utils/stock-helper';
+import { BuyModelPage } from '../buy-model/buy-model.page';
+import { ToastMsgComponent } from 'src/app/shared/components/toast-msg/toast-msg.component';
+import { trackById } from 'src/app/shared/utils/stock-helper';
 
 @Component({
   selector: 'app-discover',
@@ -28,63 +30,54 @@ import { getTopStocksBy } from 'src/app/shared/utils/stock-helper';
     IonItem,
     CommonModule,
     StockCardPage,
-    InstrumentPage
-  ]
+    InstrumentPage,
+    BuyModelPage,
+    ToastMsgComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DiscoverPage implements OnInit, OnDestroy {
+export class DiscoverPage implements OnInit {
   stocks: StockDetails[] = [];
-  filteredStocks: StockDetails[] = [];
+  filteredStock$: Observable<StockDetails[]> = of([]);
   searchTerm = '';
-  rvStockList: StockDetails[] = [];
-  topVolumeStocks: StockDetails[] = [];
-  unsubscribe$ = new Subject<void>();
+  rvStockList$: Observable<StockDetails[]> = of([]);
+  topVolumeStocks$: Observable<StockDetails[]> = of([]);
+  trackById!: (index: number, stock: StockDetails | UserStockDetails) => string;
 
+  @ViewChild(IonSearchbar) serachBar!: IonSearchbar;
+  
   constructor(
     private stockService: StockService,
     private recentlyViewed: StockStorageService
   ) {}
 
   ngOnInit() {
-    this.stockService
-      .getStockDetails()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data) => {
-        this.stocks = data;
-        this.filteredStocks = [];
-        this.loadRVStockList();
-
-        // Displaying top 3 volume stocks assuming it is based on volume
-        this.topVolumeStocks = getTopStocksBy(data, 3, 'volume');
-      });
-  }
-
-  async loadRVStockList() {
-    this.rvStockList = await this.recentlyViewed.getRecentSearch();
+      this.topVolumeStocks$ = this.stockService.topVolumeStocks();
+      this.rvStockList$ = this.recentlyViewed.recentlyViewed$
+      this.filteredStock$ = this.stockService.filteredStocks();
+      this.trackById = trackById;
   }
 
   onClearInput() {
-    this.filteredStocks = [];
+    this.stockService.setQuery('');
+    this.serachBar.value = '';
   }
 
   filterList(event: any) {
     const query = event?.target?.value?.toLowerCase() ?? '';
     if (!query) return;
-
-    this.filteredStocks = this.stocks.filter(
-      (stock) =>
-        stock.symbol.toLowerCase().includes(query) ||
-        stock.fullName.toLowerCase().includes(query)
-    );
+      this.stockService.setQuery(query);
   }
+
 
   // Add to recently viewed on click of a stock from search results
-  async selectRVStock(stock: StockDetails) {
-    await this.recentlyViewed.addRecentSearch(stock);
-    this.loadRVStockList();
+  selectRVStock(stock: StockDetails) {
+    this.openBuyModal(stock);
+    this.recentlyViewed.addRecentSearch(stock);
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  openBuyModal(stock: StockDetails) {
+    this.stockService.openBuyModal(stock);
   }
+
 }

@@ -1,4 +1,4 @@
-import { StockDetails } from 'src/app/core/models/stock.model';
+import { StockDetails, UserStockDetails } from 'src/app/core/models/stock.model';
 
 export function getTopStocksBy(stocks: StockDetails[], n: number, key: keyof StockDetails): StockDetails[] {
     let top: StockDetails[] = [];
@@ -13,4 +13,8 @@ export function getTopStocksBy(stocks: StockDetails[], n: number, key: keyof Sto
       }
     }
     return [...top].sort((a, b) => (b[key] as number) - (a[key] as number));
+}
+
+export function trackById(index: number, stock: StockDetails | UserStockDetails) {
+  return stock.symbol;
 }

@@ -1,55 +1,69 @@
-<ion-content class="ion-padding">
+<ng-container *ngIf="filteredStock$ | async as filteredStocks">
 
-  <!-- Search bar -->
-  <ion-searchbar
-    debounce="300"
-    placeholder="Search"
-    showClearButton="never"
-    (ionInput)="filterList($event)"
-    (ionClear)="onClearInput()"
-  >
-    <div
-      *ngIf="filteredStocks.length > 0"
-      slot="end"
-      class="custom-clear"
-      (click)="onClearInput()"
+  <ion-content class="ion-padding">
+    <app-toast-msg/>
+    <!-- Search bar -->
+    <ion-searchbar
+      debounce="300"
+      placeholder="Search"
+      showClearButton="never"
+      (ionInput)="filterList($event)"
+      (ionClear)="onClearInput()"
     >
-      Cancel
-    </div>
-  </ion-searchbar>
-
-  <!-- Filtered search results -->
-  <ion-list>
-    <ng-container *ngFor="let stock of filteredStocks">
-      <ion-item (click)="selectRVStock(stock)">
-        <ion-label>
-          <h2>{{ stock.symbol }}</h2>
-          <p>{{ stock.fullName }}</p>
-        </ion-label>
-      </ion-item>
-    </ng-container>
-  </ion-list>
-
-
-  <section *ngIf="filteredStocks.length == 0">
-  <!-- Recently viewed -->
-    <div class="recentlyViewed" *ngIf="rvStockList.length > 0">
-      <h2>Recently searched</h2>
-      <ng-container *ngFor="let stock of rvStockList">
-        <app-instrument [stock]="stock" [isUserStock]="false"></app-instrument>
-      </ng-container>
-    </div>
-
-    <!-- Top 3 volume stocks -->
-    <div class="topVoulume" *ngIf="topVolumeStocks.length > 0">
-      <h2>Top 3 volume stock</h2>
-      <div class="stocks-carousel">
-        <ng-container *ngFor="let stock of topVolumeStocks">
-          <app-stock-card [stock]="stock" [topByVolume]="true"></app-stock-card>
-        </ng-container>
+      <!-- Cancel button shows only if there are filtered results -->
+      <div *ngIf="filteredStocks.length" slot="end" class="custom-clear" (click)="onClearInput()">
+        Cancel
       </div>
-    </div>
+    </ion-searchbar>
 
-  </section>
+    <!-- Filtered search results -->
+    <ion-list *ngIf="filteredStocks.length > 0">
+      <ng-container *ngFor="let stock of filteredStocks; trackBy: trackById">
+        <ion-item (click)="selectRVStock(stock)">
+          <ion-label>
+            <h2>{{ stock.symbol }}</h2>
+            <p>{{ stock.fullName }}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
 
-</ion-content>
+    <!-- Recently viewed & Top volume when no search results -->
+    <ng-container *ngIf="filteredStocks.length === 0">
+
+      <!-- Recently viewed -->
+      <section role="region" aria-labelledby="recently-viewed-stocks">
+        <ng-container *ngIf="rvStockList$ | async as rvList">
+          <div class="recentlyViewed" *ngIf="rvList.length > 0">
+            <h2>Recently searched</h2>
+            <ng-container *ngFor="let stock of rvList; trackBy: trackById">
+              <app-instrument [stock]="stock" [isUserStock]="false" (selected)="openBuyModal($event)"></app-instrument>
+            </ng-container>
+          </div>
+        </ng-container>
+      </section>
+
+      <!-- Top 3 volume stocks -->
+      <section role="region" aria-labelledby="top-volume-stocks">
+        <ng-container *ngIf="topVolumeStocks$ | async as topVolumeStocks">
+          <div class="topVolume" *ngIf="topVolumeStocks.length > 0">
+            <h2>Top 3 volume stock</h2>
+            <div class="stocks-carousel">
+              <ng-container *ngFor="let stock of topVolumeStocks; trackBy: trackById">
+                <app-stock-card [stock]="stock" [size]="'large'" (selected)="openBuyModal($event)"></app-stock-card>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </section>
+
+    </ng-container>
+
+  </ion-content>
+
+  <app-buy-model
+    class="buy-modal"
+  >
+  </app-buy-model>
+
+</ng-container>
