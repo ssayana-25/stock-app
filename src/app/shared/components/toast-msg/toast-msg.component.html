@@ -1,0 +1,6 @@
+<ion-toast
+  [isOpen]="isToastMsgOpen$ | async"
+  position="top"
+  [message]="(selectedStock$ | async)?.fullName + ' successfully purchased'"
+  [duration]="3000">
+</ion-toast>

@@ -2,67 +2,64 @@
   <ion-toolbar>
     <ion-title>Dashboard</ion-title>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content class="ion-padding">
+  <app-toast-msg></app-toast-msg>
+  <ion-button *ngIf="!(notificationsEnabled$ | async)" (click)="enableAlerts()">
+    Enable Alerts
+  </ion-button>
+  <ng-container *ngIf="userStocks$ | async as userStockList">
+    <section *ngIf="userStockList.length" role="region" aria-labelledby="holding-stocks">
+      <div class="equity-card">
+        <p class="equity-label">Total equity</p>
+        <h1 *ngIf="totalEquity$ | async as totalEquity " class="equity-value">
+          {{ totalEquity  | currency:'USD':'symbol':'1.2-2' }}
+        </h1>
+      </div>
 
-  <ion-toast
-    [isOpen]="isToastOpen"
-    position="top"
-    [message]="selectedStock?.fullName + ' successfully purchased'"
-    [duration]="3000">
-  </ion-toast>
+      <!-- Holdings section -->
+      <div class="holdings">
+        <h2>Holdings</h2>
+        <ion-list>
+          <ion-item class="holding-heading">
+            <ion-label>
+              <div>Stock</div>
+            </ion-label>
+            <div class="price-section">
+              <div class="price">Price</div>
+              <div class="change">Change</div>
+            </div>
+          </ion-item>
 
-  <div class="equity-card" *ngIf="userStocks.length > 0">
-    <p class="equity-label">Total equity</p>
-    <h1 *ngIf="totalEquity" class="equity-value">
-      {{ totalEquity | currency:'USD':'symbol':'1.2-2' }}
-    </h1>
-  </div>
-
-  <!-- Holdings section -->
-  <div class="holdings" *ngIf="userStocks.length > 0">
-    <h2>Holdings</h2>
-    <ion-list>
-      <ion-item class="holding-heading">
-        <ion-label>
-          <div>Stock</div>
-        </ion-label>
-        <div class="price-section">
-          <div class="price">Price</div>
-          <div class="change">Change</div>
-        </div>
-      </ion-item>
-
-      <!-- User stocks -->
-      <ng-container *ngFor="let stock of userStocks; trackBy: trackById">
-        <app-instrument [stock]="stock" [isUserStock]="true"></app-instrument>
-      </ng-container>
-    </ion-list>
-  </div>
+          <!-- User stocks -->
+          <ng-container *ngFor="let stock of userStockList; trackBy: trackById">
+            <app-instrument [stock]="stock" [isUserStock]="true"></app-instrument>
+          </ng-container>
+        </ion-list>
+      </div>
+    </section>
+  </ng-container>
 
   <!-- Trending stocks -->
-  <div class="trending">
+  <section class="trending" role="region" aria-labelledby="trending-stocks">
     <h2>Trending stocks</h2>
-    <section class="stocks-carousel">
-      <ng-container *ngFor="let stock of trendingStocks; trackBy: trackById">
+    <div class="stocks-carousel">
+      <ng-container *ngFor="let stock of trendingStocks$ | async ; trackBy: trackById">
         <app-stock-card
           [stock]="stock"
+          [size]="'small'" 
           (selected)="openBuyModal($event)">
         </app-stock-card>
       </ng-container>
-    </section>
-  </div>
+    </div>
+  </section>
 
   <!-- Buy modal -->
-  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeBuyModal()">
-    <ng-template>
       <app-buy-model
         class="buy-modal"
-        [stock]="selectedStock"
-        (dismiss)="closeBuyModal($event)">
+        >
       </app-buy-model>
-    </ng-template>
-  </ion-modal>
 
 </ion-content>

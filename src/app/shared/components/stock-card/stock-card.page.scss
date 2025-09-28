@@ -1,10 +1,13 @@
 .stock-card {
     width: 150px;
     cursor: pointer;
-  
-    &.topVolumeCard {
+    &.large-card{
       width: 350px;
-  
+    }
+    &.medium-card{
+      width: 250px;
+    }
+    &.large-card, &.medium-card {
       .price {
         font-size: 16px;
         font-weight: 600;

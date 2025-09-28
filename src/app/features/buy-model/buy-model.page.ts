@@ -1,10 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { GestureController, Gesture } from '@ionic/angular';
-import { IonInput, IonItem, IonLabel, IonToolbar, IonTitle, IonHeader } from '@ionic/angular/standalone';
+import { IonInput, IonItem, IonLabel, IonToolbar, IonTitle, IonHeader, IonText, IonModal , IonButton, IonButtons, IonIcon} from '@ionic/angular/standalone';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { StockDetails, UserStockDetails } from 'src/app/core/models/stock.model';
-import { Subject } from 'rxjs';
+import { map, Observable, of, startWith, Subject, takeUntil } from 'rxjs';
+import { StockService } from 'src/app/core/services/stock.service';
+import { StockStorageService } from 'src/app/core/services/storage.service';
+import { addIcons } from 'ionicons';
+import { close } from 'ionicons/icons';
 
 @Component({
   selector: 'app-buy-model',
@@ -20,24 +24,36 @@ import { Subject } from 'rxjs';
     IonLabel,
     IonItem,
     IonInput,
-    CurrencyPipe
-  ]
+    IonText,
+    CurrencyPipe,
+    IonModal,
+    IonButton, 
+    IonButtons, 
+    IonIcon
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BuyModelPage implements AfterViewInit , OnDestroy{
-  @Input() stock?: StockDetails;
-  @Output() dismiss = new EventEmitter<UserStockDetails>();
-
+export class BuyModelPage implements  OnDestroy{
+  stock: StockDetails | null = null;
   @ViewChild('thumb', { read: ElementRef }) thumb!: ElementRef;
   @ViewChild('track', { read: ElementRef }) track!: ElementRef;
+  @ViewChild(IonModal) modal?: IonModal;
 
   buyForm: FormGroup;
-  total: number = 0;
+  total$: Observable<number> = of(0);
   private gesture?: Gesture;
   unsubscribe$ = new Subject<void>();
+  isModalOpen$: Observable<boolean> = of(false);
 
-  constructor(private fb: FormBuilder, private gestureCtrl: GestureController) {
+  constructor(
+    private fb: FormBuilder, 
+    private gestureCtrl: GestureController,
+    private stockService: StockService,
+    private stockStorage: StockStorageService
+  ) {
+    addIcons({ close });
     this.buyForm = this.fb.group({
-      shares: [null, [Validators.required, Validators.min(1)]],
+      shares: [0, [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -46,16 +62,33 @@ export class BuyModelPage implements AfterViewInit , OnDestroy{
   }
 
   ngOnInit() {
-    if (!this.stock) return;
-    console.log(this.stock);
-    this.buyForm.valueChanges.subscribe(val => {
-      const quantity = val.shares || 0;
-      this.total = this.stock?.ask ? quantity * this.stock.ask : 0;
-    });
+    this.isModalOpen$ = this.stockService.isBuyModalOpen$ 
+    this.stockService.selectedStock$
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe(
+      (data)=> this.stock = data
+    );
+
+    this.total$ = this.buyForm.valueChanges.pipe(
+      startWith(this.buyForm.value),
+      map(val => this.computeTotal(val.shares || 0))
+    );
+    
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => this.initGesture(), 50);
+  onModalPresented() {
+    setTimeout(() => {
+      try {
+        this.initGesture();
+      } catch (e) {
+        console.error(e);
+      }
+    }, 0);
+  }
+  computeTotal(val: number):number{
+    return this.stock?.ask ? val * this.stock.ask : 0;
   }
 
   validateNumber(event: KeyboardEvent) {
@@ -92,8 +125,8 @@ export class BuyModelPage implements AfterViewInit , OnDestroy{
       },
 
       onEnd: ev => {
-        const trackWidth = this.track.nativeElement.offsetWidth;
-        const thumbWidth = this.thumb.nativeElement.offsetWidth;
+        const trackWidth = this.track?.nativeElement.offsetWidth;
+        const thumbWidth = this.thumb?.nativeElement.offsetWidth;
 
         if (ev.deltaX < trackWidth - thumbWidth) {
           this.resetThumb();
@@ -119,15 +152,27 @@ export class BuyModelPage implements AfterViewInit , OnDestroy{
         symbol: this.stock.symbol,
         shares: this.buyForm.value.shares,
         ask: this.stock.ask,
-        stockEquity: this.total,
+        stockEquity: this.computeTotal(this.buyForm.value.shares),
         change: this.stock.change
       };
-      this.buyForm.reset();
-      this.dismiss.emit(usersStockDetails);
+      
+      this.closeBuyModal(usersStockDetails);
     }
   }
 
+  closeBuyModal(stock?: UserStockDetails) {
+    this.buyForm.reset();
+    if(stock){
+      this.stockService.closeBuyModal(stock);
+      this.stockStorage.buyStock(stock);
+    }else{
+      this.stockService.closeBuyModal();
+    }
+ 
+  }
+
   ngOnDestroy(): void {
+    this.gesture?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

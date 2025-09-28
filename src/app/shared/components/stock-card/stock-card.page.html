@@ -1,16 +1,16 @@
-<ion-card (click)="selectStock()" class="stock-card" [ngClass]="{'topVolumeCard': topByVolume}">
+<ion-card (click)="selectStock()" class="stock-card" [ngClass]="{'small-card': isSmall, 'large-card': isLarge, 'medium-card': isMedium}">
   <ion-card-header>
     <div class="card-header">
       <ion-img [src]="stock.logo" alt="{{ stock.symbol }} logo" class="stock-img"></ion-img>
       <app-type-pill *ngIf="stock.type" [type]="stock.type"></app-type-pill>
     </div>
 
-    <ng-container *ngIf="!topByVolume">
+    <ng-container *ngIf="isSmall">
       <ion-card-title>{{ stock.symbol }}</ion-card-title>
       <div class="card-subtitle">{{ stock.fullName }}</div>
     </ng-container>
 
-    <ng-container *ngIf="topByVolume">
+    <ng-container *ngIf="isLarge || isMedium">
       <div class="price">
         ${{ price | number: '1.2-2' }}
       </div>
@@ -21,11 +21,11 @@
     </ng-container>
   </ion-card-header>
 
-  <ion-card-content *ngIf="!topByVolume">
+  <ion-card-content *ngIf="isSmall">
     ${{ price | number: '1.2-2' }}
   </ion-card-content>
 
-  <ion-card-content *ngIf="topByVolume">
+  <ion-card-content *ngIf="isLarge">
     <div class="dividing-line"></div>
     <div class="extra-info">
       <div class="info-item">

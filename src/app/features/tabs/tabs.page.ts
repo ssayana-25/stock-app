@@ -1,4 +1,4 @@
-import { Component, EnvironmentInjector, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EnvironmentInjector, inject } from '@angular/core';
 import { 
   IonTabs, IonTabBar, IonTabButton, IonLabel 
 } from '@ionic/angular/standalone';
@@ -11,6 +11,7 @@ import { SvgIconPage } from 'src/app/shared/components/svg-icon/svg-icon.page';
   imports: [
     IonTabs, IonTabBar, IonTabButton, IonLabel, SvgIconPage
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabsPage {
   activeTab: string = 'invest'; 

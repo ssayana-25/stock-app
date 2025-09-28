@@ -1,34 +1,49 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ stock?.symbol }} ${{ stock?.ask }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-modal [isOpen]="isModalOpen$ | async " 
+  (ionModalDidPresent)="onModalPresented()"
+  (didDismiss)="closeBuyModal()"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ stock?.symbol }} ${{ stock?.ask }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeBuyModal()" aria-label="Close buy modal">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-<ion-item>
-  <ion-label position="stacked">Price</ion-label>
-  <ion-input [value]="'At market'" readonly></ion-input>
-</ion-item>
+    <ion-item>
+      <ion-label position="stacked">Price</ion-label>
+      <ion-input [value]="'At market'" readonly></ion-input>
+    </ion-item>
 
-<ion-item>
-  <ion-label position="stacked">Total</ion-label>
-  <ion-input [value]="total | currency:'USD':'symbol':'1.2-2'" readonly></ion-input>
-</ion-item>
+    <ion-item>
+      <ion-label position="stacked">Total</ion-label>
+      <ion-input [value]="total$ | async | currency:'USD':'symbol':'1.2-2'" readonly></ion-input>
+    </ion-item>
 
-<form [formGroup]="buyForm">
-  <ion-item>
-    <ion-label position="stacked">Shares</ion-label>
-    <ion-input type="number" formControlName="shares" placeholder="Enter shares" (keypress)="validateNumber($event)"></ion-input>
-  </ion-item>
-</form>
+    <form [formGroup]="buyForm">
+      <ion-item>
+        <ion-label position="stacked">Shares</ion-label>
+        <ion-input type="number" formControlName="shares" placeholder="Enter shares" (keypress)="validateNumber($event)"></ion-input>
+      </ion-item>
+      <ion-text class="ion-padding" color="danger" *ngIf="buyForm.get('shares')?.invalid && (buyForm.get('shares')?.touched || buyForm.get('shares')?.dirty)">
+        Enter a valid number
+      </ion-text>
+    </form>
 
-<!-- Swipe-to-Buy -->
-<div class="swipe-container">
-  <div class="swipe-track" [ngClass]="{'invalid': !isFormValid}" #track>
-    <div class="swipe-thumb" #thumb>
-      <img src="../../../assets/icon/buy-chevrons.svg" style="width:52px; height:52px;" />
+    <!-- Swipe-to-Buy -->
+    <div class="swipe-container">
+      <div class="swipe-track" [ngClass]="{'invalid': !isFormValid}" #track>
+        <div class="swipe-thumb" #thumb>
+          <img src="../../../assets/icon/buy-chevrons.svg" style="width:52px; height:52px;" />
+        </div>
+        <span class="swipe-label">
+          {{ isFormValid ? 'Swipe to Buy' : 'Enter Shares' }}
+        </span>
+      </div>
     </div>
-    <span class="swipe-label">
-      {{ isFormValid ? 'Swipe to Buy' : 'Enter Shares' }}
-    </span>
-  </div>
-</div>
+  </ng-template>
+</ion-modal>
