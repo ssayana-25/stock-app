@@ -32,7 +32,7 @@
     <ng-container *ngIf="filteredStocks.length === 0">
 
       <!-- Recently viewed -->
-      <section role="region" aria-labelledby="recently-viewed-stocks">
+      <section aria-label="recently-viewed-stocks">
         <ng-container *ngIf="rvStockList$ | async as rvList">
           <div class="recentlyViewed" *ngIf="rvList.length > 0">
             <h2>Recently searched</h2>
@@ -44,7 +44,7 @@
       </section>
 
       <!-- Top 3 volume stocks -->
-      <section role="region" aria-labelledby="top-volume-stocks">
+      <section aria-label="top-volume-stocks">
         <ng-container *ngIf="topVolumeStocks$ | async as topVolumeStocks">
           <div class="topVolume" *ngIf="topVolumeStocks.length > 0">
             <h2>Top 3 volume stock</h2>

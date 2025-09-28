@@ -11,7 +11,7 @@
     Enable Alerts
   </ion-button>
   <ng-container *ngIf="userStocks$ | async as userStockList">
-    <section *ngIf="userStockList.length" role="region" aria-labelledby="holding-stocks">
+    <section *ngIf="userStockList.length" role="region" aria-label="holding-stocks">
       <div class="equity-card">
         <p class="equity-label">Total equity</p>
         <h1 *ngIf="totalEquity$ | async as totalEquity " class="equity-value">
@@ -43,7 +43,7 @@
   </ng-container>
 
   <!-- Trending stocks -->
-  <section class="trending" role="region" aria-labelledby="trending-stocks">
+  <section class="trending">
     <h2>Trending stocks</h2>
     <div class="stocks-carousel">
       <ng-container *ngFor="let stock of trendingStocks$ | async ; trackBy: trackById">
